@@ -17,6 +17,20 @@ const urlDatabase = {
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 
+// Functions
+function generateRandomString() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  const len = 6;
+  let randomString = "";
+
+  for (let i = 0; i < len; i++) {
+    const randomNumber = Math.floor(Math.random() * chars.length);
+    randomString += chars[randomNumber];
+  }
+  return randomString;
+}
+
 // Posting
 app.post("/urls", (req, res) => {
   console.log(req.body); // Log the POST request body to the console
