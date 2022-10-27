@@ -17,6 +17,12 @@ const urlDatabase = {
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 
+// Posting
+app.post("/urls", (req, res) => {
+  console.log(req.body); // Log the POST request body to the console
+  res.send("Ok"); // Respond with 'Ok' (we will replace this)
+});
+
 // Routing
 app.get("/", (req, res) => {
   res.send("Hello!");
