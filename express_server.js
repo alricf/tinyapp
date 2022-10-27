@@ -14,6 +14,9 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+
 // Routing
 app.get("/", (req, res) => {
   res.send("Hello!");
