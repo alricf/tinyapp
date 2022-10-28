@@ -73,8 +73,15 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
+// DELETE
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
+  res.redirect("/urls");
+});
+
+// UPDATE
+app.post("/urls/:id/edit", (req, res) => {
+  urlDatabase[req.params.id] = req.body.newURL;
   res.redirect("/urls");
 });
 
