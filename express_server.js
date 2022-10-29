@@ -1,5 +1,6 @@
 // Libraries required
 const express = require("express");
+const cookieParser = require('cookie-parser');
 
 // Configuration
 const app = express();
@@ -16,6 +17,7 @@ const urlDatabase = {
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Functions
 function generateRandomString() {
