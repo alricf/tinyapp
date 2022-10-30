@@ -19,6 +19,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-end">
+      <% if (username===undefined) { %>
       <form class="form-inline" method="POST" action="/login">
         <input
             class="form-control"
@@ -29,7 +30,14 @@
           />
           <button type="submit" class="btn btn-outline-dark">Login</button>
       </form>
-      <%= username %>
+      <% } else { %>
+        <form class="form-inline" method="POST" action="/logout">
+          <h5 style="margin-bottom: 0;">Logged in as: <%= username %>! &nbsp;</h5>
+          
+          <button type="submit" class="btn btn-outline-dark">Logout</button>
+        
+        </form>
+        <% } %>
     </div>
   </nav>
 </header>
