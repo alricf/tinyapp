@@ -35,6 +35,7 @@ function generateRandomString() {
 
 // Routing //
 // READ
+/*
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -46,6 +47,7 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
+*/
 
 app.get("/urls", (req, res) => {
   const templateVars = { 
@@ -75,6 +77,13 @@ app.get("/u/:id", (req, res) => {
   const { id } = req.params;
   const longURL = urlDatabase[id];
   res.redirect(longURL);
+});
+
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"]
+  };
+  res.render("urls_registration", templateVars);
 });
 
 // CREATE
