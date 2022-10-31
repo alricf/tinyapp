@@ -48,7 +48,7 @@ function generateRandomString() {
 };
 
 // Helper function to check if user email already exists
-function userLookup(userEmail) {
+function getUserByEmail(userEmail) {
   for (let item in users) {
     if(users[item].email === userEmail) {
       return users[item];
@@ -135,10 +135,10 @@ app.post("/register", (req, res) => {
 
   if (email === "" || password === "") {
     console.log(users);
-    return res.send('400 status code error: Email and/or Password fields are empty');
+    return res.send('400 status code error: Email and/or Password field(s) are empty');
   }
   // Helper function call
-  const exist = userLookup(email);
+  const exist = getUserByEmail(email);
   if (exist) {
     console.log(users);
     return res.send('400 status code error: Email already exists');
