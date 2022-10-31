@@ -33,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Functions
+// Helper function that generates random 6 character strings
 function generateRandomString() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -44,7 +45,17 @@ function generateRandomString() {
     randomString += chars[randomNumber];
   }
   return randomString;
-}
+};
+
+// Helper function to check if user email already exists
+function userLookup(userEmail) {
+  for (let item in users) {
+    if(users[item].email === userEmail) {
+      return users[item];
+    }
+  }
+  return null;
+};
 
 // Routing //
 // READ
@@ -121,13 +132,25 @@ app.post("/register", (req, res) => {
   const id = generateRandomString();
   const email = req.body.email;
   const password = req.body.password;
+
+  if (email === "" || password === "") {
+    console.log(users);
+    return res.send('400 status code error: Email and/or Password fields are empty');
+  }
+  // Helper function call
+  const exist = userLookup(email);
+  if (exist) {
+    console.log(users);
+    return res.send('400 status code error: Email already exists');
+  }
+
   users[id] = {
     id,
     email,
     password,
   };
   res.cookie("user_id", id);
-  // console.log(users);
+  console.log(users);
   res.redirect("/urls");
 });
 
