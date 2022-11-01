@@ -126,7 +126,22 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie('username', req.body.username);
+  // res.cookie('username', req.body.username);
+  const email = req.body.email;
+  const password = req.body.password;
+  const exist = getUserByEmail(email);
+  
+  if (!exist) {
+    return res.send('403 status code error: E-mail cannot be found');
+  }
+
+  if (exist.password !== password) {
+    return res.send('403 status code error: Password does not match');
+  } else {
+    res.cookie("user_id", exist.id);
+  }
+  // test to check database
+  console.log(users);
   res.redirect("/urls");
 });
 
