@@ -130,7 +130,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const exist = getUserByEmail(email);
-
+  console.log(users);
   if (!exist) {
     return res.send('403 status code error: E-mail cannot be found');
   }
@@ -147,7 +147,7 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 app.post("/register", (req, res) => {
