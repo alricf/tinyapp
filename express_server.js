@@ -104,17 +104,24 @@ app.get("/u/:id", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  const templateVars = {
-    user: users[req.cookies["user_id"]],
-  };
-  res.render("urls_registration", templateVars);
+  const userId = req.cookies.user_id;
+  const user = users[userId];
+  if(user) {
+    res.redirect("/urls");
+    return;
+  }
+
+  res.render("urls_registration", { user });
 });
 
 app.get("/login", (req, res) => {
-  const templateVars = {
-    user: users[req.cookies["user_id"]],
-  };
-  res.render("urls_login", templateVars);
+  const userId = req.cookies.user_id;
+  const user = users[userId];
+  if(user) {
+    res.redirect("/urls");
+    return;
+  }
+  res.render("urls_login", { user });
 });
 
 // CREATE
