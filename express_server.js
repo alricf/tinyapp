@@ -85,6 +85,12 @@ app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]],
   };
+
+  if(!templateVars.user) {
+    res.redirect("/login");
+    return;
+  }
+
   res.render("urls_new", templateVars);
 });
 
@@ -126,6 +132,14 @@ app.get("/login", (req, res) => {
 
 // CREATE
 app.post("/urls", (req, res) => {
+  const userId = req.cookies.user_id;
+  const user = users[userId];
+  if(!user) {
+    res.send("Error: Cannot shorten URLs because user is not logged in");
+    console.log(users);
+    return;
+  }
+  
   const shortURL = generateRandomString();
   const longURL = req.body.longURL;
   urlDatabase[shortURL] = longURL;
