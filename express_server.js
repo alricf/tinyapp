@@ -50,7 +50,7 @@ function generateRandomString() {
 // Helper function to check if user email already exists
 function getUserByEmail(userEmail) {
   for (let item in users) {
-    if(users[item].email === userEmail) {
+    if (users[item].email === userEmail) {
       return users[item];
     }
   }
@@ -110,6 +110,13 @@ app.get("/register", (req, res) => {
   res.render("urls_registration", templateVars);
 });
 
+app.get("/login", (req, res) => {
+  const templateVars = {
+    user: users[req.cookies["user_id"]],
+  };
+  res.render("urls_login", templateVars);
+});
+
 // CREATE
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
@@ -134,13 +141,13 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
 
   if (email === "" || password === "") {
-    console.log(users);
+    // console.log(users);
     return res.send('400 status code error: Email and/or Password field(s) are empty');
   }
   // Helper function call
   const exist = getUserByEmail(email);
   if (exist) {
-    console.log(users);
+    // console.log(users);
     return res.send('400 status code error: Email already exists');
   }
 
@@ -150,7 +157,7 @@ app.post("/register", (req, res) => {
     password,
   };
   res.cookie("user_id", id);
-  console.log(users);
+  // console.log(users);
   res.redirect("/urls");
 });
 
