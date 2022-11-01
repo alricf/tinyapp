@@ -126,11 +126,11 @@ app.post("/urls", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  // res.cookie('username', req.body.username);
   const email = req.body.email;
   const password = req.body.password;
   const exist = getUserByEmail(email);
-  console.log(users);
+  // Test 
+  // console.log(users);
   if (!exist) {
     return res.send('403 status code error: E-mail cannot be found');
   }
@@ -141,7 +141,7 @@ app.post("/login", (req, res) => {
     res.cookie("user_id", exist.id);
   }
   // test to check database
-  console.log(users);
+  // console.log(users);
   res.redirect("/urls");
 });
 

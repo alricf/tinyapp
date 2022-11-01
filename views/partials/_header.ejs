@@ -25,11 +25,15 @@
       <a class="nav-item nav-link" href="http://localhost:8080/login">Login</a>
       <a class="nav-item nav-link" href="http://localhost:8080/register">Register</a>
     <% } else { %>
-      <h5 style="margin-bottom:0;">Logged In As: <%= user %> &nbsp;</h5>
-      <button 
-        class="btn btn-outline-dark" 
+      <div class="align-self-center">
+      <h5 style="margin-bottom:0;">Logged In As: <%= user.email %> &nbsp;</h5>
+    </div>
+    <form method="POST" action="/logout">
+      <button
         type="submit"
+        class="btn btn-outline-dark" 
       >Logout</button>
+    </form>
     <% } %>
     </div>
   </div>
