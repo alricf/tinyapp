@@ -1,6 +1,7 @@
 // Libraries required
 const express = require("express");
 const cookieParser = require('cookie-parser');
+const bcrypt = require("bcryptjs");
 
 // Configuration
 const app = express();
@@ -211,11 +212,13 @@ app.post("/register", (req, res) => {
   const id = generateRandomString();
   const email = req.body.email;
   const password = req.body.password;
+ 
 
   if (email === "" || password === "") {
     // console.log(users);
     return res.send('400 status code error: Email and/or Password field(s) are empty');
   }
+  const hashedPassword = bcrypt.hashSync(password, 10);
   // Helper function call
   const exist = getUserByEmail(email);
   if (exist) {
@@ -226,7 +229,7 @@ app.post("/register", (req, res) => {
   users[id] = {
     id,
     email,
-    password,
+    password: hashedPassword,
   };
   res.cookie("user_id", id);
   // console.log(users);
