@@ -106,6 +106,10 @@ app.get("/urls/:id", (req, res) => {
 app.get("/u/:id", (req, res) => {
   const { id } = req.params;
   const longURL = urlDatabase[id];
+  if(!longURL) {
+    res.send('Error: Shortened URL does not exist.');
+    return;
+  }
   res.redirect(longURL);
 });
 
