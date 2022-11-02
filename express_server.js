@@ -23,16 +23,16 @@ const urlDatabase = {
 };
 
 const users = {
-  userRandomID: {
-    id: "userRandomID",
-    email: "user@example.com",
-    password: "purple-monkey-dinosaur",
-  },
-  user2RandomID: {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk",
-  },
+  // userRandomID: {
+  //   id: "userRandomID",
+  //   email: "user@example.com",
+  //   password: "purple-monkey-dinosaur",
+  // },
+  // user2RandomID: {
+  //   id: "user2RandomID",
+  //   email: "user2@example.com",
+  //   password: "dishwasher-funk",
+  // },
 };
 
 // Middleware
@@ -193,13 +193,14 @@ app.post("/login", (req, res) => {
     return res.send('403 status code error: E-mail cannot be found');
   }
 
-  if (exist.password !== password) {
-    return res.send('403 status code error: Password does not match');
+  const passCheck = bcrypt.compareSync(password, exist.password);
+  if (passCheck) {
+    res.cookie("user_id", exist.id); 
   } else {
-    res.cookie("user_id", exist.id);
+    return res.send('403 status code error: Password does not match');
   }
   // test to check database
-  // console.log(users);
+  console.log(users);
   res.redirect("/urls");
 });
 
@@ -232,7 +233,8 @@ app.post("/register", (req, res) => {
     password: hashedPassword,
   };
   res.cookie("user_id", id);
-  // console.log(users);
+  //test to see db
+  console.log(users);
   res.redirect("/urls");
 });
 
