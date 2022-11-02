@@ -235,13 +235,38 @@ app.post("/register", (req, res) => {
 
 // DELETE
 app.post("/urls/:id/delete", (req, res) => {
+
+  if(!urlDatabase[req.params.id]) {
+    return res.send("Error: ShortURL does not exist!");
+  }
+
+  if(!req.cookies["user_id"]) {
+    return res.send("Error: User is not logged in. Kindly, login");
+  }
+
+  if (urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+    return res.send("Error: URL does not belong to user.");
+  }
+
   delete urlDatabase[req.params.id];
   res.redirect("/urls");
 });
 
-// UPDATE
-app.post("/urls/:id/edit", (req, res) => {
-  urlDatabase[req.params.id] = req.body.newURL;
+// UPDATE-Edit
+app.post("/urls/:id", (req, res) => {
+  if(!urlDatabase[req.params.id]) {
+    return res.send("Error: ShortURL does not exist!");
+  }
+
+  if(!req.cookies["user_id"]) {
+    return res.send("Error: User is not logged in. Kindly, login");
+  }
+
+  if(urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+    return res.send("Error: URL does not belong to user.");
+  }
+
+  urlDatabase[req.params.id].longURL = req.body.newURL;
   res.redirect("/urls");
 });
 
