@@ -13,11 +13,11 @@ app.set("view engine", "ejs");
 const urlDatabase = {
   b6UTxQ: {
     longURL: "https://www.tsn.ca",
-    userID: "aJ48lW",
+    userID: "userRandomID",
   },
   i3BoGr: {
     longURL: "https://www.google.ca",
-    userID: "aJ48lW",
+    userID: "user2RandomID",
   },
 };
 
@@ -63,6 +63,16 @@ function getUserByEmail(userEmail) {
   return null;
 };
 
+function urlsForUser(id) {
+  let urls = {};
+  for(let item in urlDatabase) {
+    if(urlDatabase[item].userID === id) {
+      urls[item] = urlDatabase[item].longURL;
+    }
+  }
+  return urls;
+}
+
 // Routing //
 // READ
 /*
@@ -80,10 +90,15 @@ app.get("/hello", (req, res) => {
 */
 
 app.get("/urls", (req, res) => {
+  if(!req.cookies["user_id"]){
+    return res.send("Error: User not logged in. Kindly, register or login.")
+  }
+
   const templateVars = {
-    urls: urlDatabase,
+    urls: urlsForUser(req.cookies["user_id"]),
     user: users[req.cookies["user_id"]],
   };
+  
   res.render("urls_index", templateVars);
 });
 
@@ -101,21 +116,31 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
+  if(!req.cookies["user_id"]) {
+    return res.send("Error: User not logged in. Kindly login!")
+  }
+  
+  if (urlDatabase[req.params.id].userID !== req.cookies["user_id"]) {
+    return res.send("Error: URL does not belong to user.");
+  }
+  
   const templateVars = {
     id: req.params.id,
     longURL: urlDatabase[req.params.id].longURL,
     user: users[req.cookies["user_id"]],
   };
+ 
   res.render("urls_show", templateVars);
 });
 
 app.get("/u/:id", (req, res) => {
-  const { id } = req.params;
-  const longURL = urlDatabase[id].longURL;
-  if(!longURL) {
+  if(!urlDatabase[req.params.id]) {
     res.send('Error: Shortened URL does not exist.');
     return;
   }
+  const { id } = req.params;
+  const longURL = urlDatabase[id].longURL;
+ 
   res.redirect(longURL);
 });
 
