@@ -4,6 +4,8 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const cookieSession = require("cookie-session");
 
+const getUserByEmail = require("./helpers");
+
 // Configuration
 const app = express();
 const PORT = 8080; // default port 8080
@@ -63,15 +65,7 @@ function generateRandomString() {
   return randomString;
 };
 
-// Helper function to check if user email already exists
-function getUserByEmail(userEmail) {
-  for (let item in users) {
-    if (users[item].email === userEmail) {
-      return users[item];
-    }
-  }
-  return null;
-};
+
 
 function urlsForUser(id) {
   let urls = {};
@@ -189,7 +183,7 @@ app.post("/urls", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const exist = getUserByEmail(email);
+  const exist = getUserByEmail(email, users);
   // Test 
   console.log(users);
   if (!exist) {
@@ -225,7 +219,7 @@ app.post("/register", (req, res) => {
   }
   const hashedPassword = bcrypt.hashSync(password, 10);
   // Helper function call
-  const exist = getUserByEmail(email);
+  const exist = getUserByEmail(email, users);
   if (exist) {
     // test db code
     console.log(users);
