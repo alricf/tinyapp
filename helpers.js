@@ -9,4 +9,4 @@ const getUserByEmail = function(compareEmail, database) {
   return null;
 };
 
-module.exports = getUserByEmail;
+module.exports = { getUserByEmail };
