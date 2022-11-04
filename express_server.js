@@ -4,7 +4,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const cookieSession = require("cookie-session");
 
-const getUserByEmail = require("./helpers");
+const { getUserByEmail } = require('./helpers.js');
 
 // Configuration
 const app = express();
@@ -187,6 +187,8 @@ app.post("/login", (req, res) => {
   // Test 
   console.log(users);
   if (!exist) {
+    //test
+    console.log(users);
     return res.send('403 status code error: E-mail cannot be found');
   }
 
@@ -214,7 +216,7 @@ app.post("/register", (req, res) => {
  
 
   if (email === "" || password === "") {
-    // console.log(users);
+    console.log(users);
     return res.send('400 status code error: Email and/or Password field(s) are empty');
   }
   const hashedPassword = bcrypt.hashSync(password, 10);
